@@ -19,11 +19,11 @@ typedef struct{
 	short nsom;		// number of som in the net
 	som** somnets;		// array of soms
 	short paramsupdate;	// som dynamics params update type
-	double** alpha;		// sensory projections learning rate
-	double** sigma;		// neighborhood size
-	double** gamma;		// cross-modal impact factor
-	double** xi;		// inhibitory component factor
-	double** kappa;		// cross-modal Hebbian learning rate
+	double* alpha;		// sensory projections learning rate
+	double* sigma;		// neighborhood size
+	double* gamma;		// cross-modal impact factor
+	double* xi;		// inhibitory component factor
+	double* kappa;		// cross-modal Hebbian learning rate
 	double lambda;		// temporal coef for learning rates
 	short datasrc;		// data source
 	int simepochs;		// simulation epochs	
@@ -33,3 +33,6 @@ typedef struct{
 simopts* cln_setup_simulation(short nnets, som** nets, short ut, double ai, double si, double gi, double xii, double ki, short src, int epochs);
 /* return simulation parameters after runtime */
 simopts* cln_get_simulation_params(simopts* in);
+/* set the current parameters in the simulation struct */
+void cln_set_simulation_params(simopts*so, int iter, double ai, double si, double gi, double xii, double ki);
+

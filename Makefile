@@ -3,7 +3,7 @@ MAJOR      = 1
 MINOR      = 0.0
 
 CC         = gcc
-WARNINGS   = -Wall -Wextra -pedantic
+WARNINGS   = -Wextra -pedantic
 
 INCLUDES   = -Isrc
 LIBS       = -lm -lrt

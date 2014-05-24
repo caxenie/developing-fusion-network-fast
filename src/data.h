@@ -31,13 +31,13 @@ typedef struct{
 typedef struct{
 	simopts* sopts;		// simulation params
 	indataset* idata;	// input data
-	som** somnets;		// som networks
+	som* somnet;		// som network
 }outdataset;
 
 /* read the data from input file or generate it depending on params */
-indataset* cln_create_input_dataset(short data__src, int vsize, int nv, char* data_file);
+indataset* cln_create_input_dataset(short netid, short data_src, int vsize, int nv, char* data_file);
 /* create the output dataset struct */
-outdataset* cln_create_output_dataset(simopts* so, indataset* ind, som** nets);
+outdataset* cln_create_output_dataset(simopts* so, indataset* ind, som* net);
 /* create output dataset and dump to file */
-FILE* cln_dump_output_dataset(outdataset* o);
+int cln_dump_output_dataset(outdataset* o);
 
