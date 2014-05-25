@@ -9,7 +9,8 @@
 
   	Simple scenario with 2 variables, representing sensory data. 
 	
-	SOM specific functionality
+	SOM specific functionality.
+	Implementations.
 */
 
 #include "som.h"

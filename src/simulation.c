@@ -10,6 +10,7 @@
         Simple scenario with 2 variables, representing sensory data. 
         
         Simulation options and parameters for runtime.
+	Implementations.
 */
 
 #include "simulation.h"
@@ -34,9 +35,8 @@ simopts* cln_setup_simulation(short nnets, som** nets, short ut, double ai, doub
 			so->alpha[idx] = ai, so->sigma[idx] = si, so->gamma[idx] = gi, so->xi[idx] = xii, so->kappa[idx] = ki;
 	}
 	for(int idx = 0; idx< so->simepochs; idx++){
-                printf("epoch [%d] %lf %lf %lf %lf %lf\n", idx, so->alpha[idx], so->sigma[idx], so->gamma[idx], so->xi[idx], so->kappa[idx]);
+                printf("Init %lf %lf %lf %lf %lf\n", so->alpha[idx], so->sigma[idx], so->gamma[idx], so->xi[idx], so->kappa[idx]);
         }
-
 	printf("cln_setup_simulation: Simulation parameters are set.\n");
 	return so;
 }

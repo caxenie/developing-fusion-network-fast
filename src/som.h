@@ -9,7 +9,9 @@
 
   	Simple scenario with 2 variables, representing sensory data. 
 	
-	SOM specific functionality
+	SOM specific functionality.
+	Definitions.
+	
 */
 
 #include <stdio.h>
@@ -59,9 +61,9 @@ typedef struct{
 }som;
 
 /* build a SOM network given input params */
-som* cln_create_som(short nid, short nsz, short insz, double inmin, double inmax);
+som* cln_create_som(short, short, short, double, double);
 /* destroy a SOM network */
-void cln_destroy_som(som* som);
-/* display the SOM network details */
-void cln_display_som(som* som);
+void cln_destroy_som(som*);
+/* display a SOM network details */
+void cln_display_som(som*);
 

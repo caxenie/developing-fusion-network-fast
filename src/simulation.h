@@ -10,6 +10,7 @@
         Simple scenario with 2 variables, representing sensory data. 
         
         Simulation options and parameters for runtime.
+	Definitions.
 */
 
 #include "som.h"
@@ -30,9 +31,9 @@ typedef struct{
 }simopts;
 
 /* init simulation params */
-simopts* cln_setup_simulation(short nnets, som** nets, short ut, double ai, double si, double gi, double xii, double ki, short src, int epochs);
+simopts* cln_setup_simulation(short, som**, short, double, double, double, double, double, short, int);
 /* return simulation parameters after runtime */
-simopts* cln_get_simulation_params(simopts* in);
+simopts* cln_get_simulation_params(simopts*);
 /* set the current parameters in the simulation struct */
-void cln_set_simulation_params(simopts*so, int iter, double ai, double si, double gi, double xii, double ki);
+void cln_set_simulation_params(simopts*, int, double, double, double, double, double);
 
