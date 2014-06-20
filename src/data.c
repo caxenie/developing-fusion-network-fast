@@ -10,7 +10,6 @@
         Simple scenario with 2 variables, representing sensory data. 
         
         Data input readout and preprocessing utils.
-	Implementations.
 */
 
 #include "data.h"
@@ -21,7 +20,7 @@ indataset* cln_create_input_dataset(short netid, short data_src, int vsize, int 
 	/* init */
 	FILE *fin, *fout; 
 	int lcnt = 0, lidx = 1, c;
-	printf("cln_create_input_dataset: Creating input dataset from %s data...\n",(data_src==SENSOR_DATA)?"sensory":"artificial");
+	printf("cln_create_input_dataset: Creating input dataset...\n");
         /* build the dataset */
 	indataset* dset = (indataset*)calloc(1, sizeof(indataset));
 	dset->size = vsize;
@@ -56,8 +55,7 @@ indataset* cln_create_input_dataset(short netid, short data_src, int vsize, int 
 			printf("cln_create_input_dataset: Read %d sensory data samples.\n", lcnt);
 	        	for(int idx = 0; idx<dset->len; idx++){
                 		for(int jdx = 0; jdx < dset->size; jdx++){
-					// TODO add parsing routine and post-processing
-		                        dset->data[idx][jdx] = 0.0;
+		                        dset->data[idx][jdx] = 1;
                 		}
         		}
 			printf("cln_create_input_dataset: Closing sensory data file.\n");

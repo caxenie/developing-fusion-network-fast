@@ -10,7 +10,6 @@
         Simple scenario with 2 variables, representing sensory data. 
         
         Data input readout and preprocessing utils.
-	Definitions.
 */
 
 #include <stdio.h>
@@ -21,11 +20,14 @@
 #include <string.h>
 #include "simulation.h"
 
+#define MIN(a,b) (((a)<(b))?(a):(b))
+#define MAX(a,b) (((a)>(b))?(a):(b))
+
 /* input dataset representation */
 typedef struct{
 	int size;	 // size of a training vector
 	int len;	 // number of training vectors
-	double** data;	 // actual data num_vectors x len_vector
+	double** data;	 // actual data
 }indataset;
 
 /* output dataset representation */
@@ -36,9 +38,9 @@ typedef struct{
 }outdataset;
 
 /* read the data from input file or generate it depending on params */
-indataset* cln_create_input_dataset(short, short, int, int, char*);
+indataset* cln_create_input_dataset(short netid, short data_src, int vsize, int nv, char* data_file);
 /* create the output dataset struct */
-outdataset* cln_create_output_dataset(simopts*, indataset*, som*);
-/* dump output dataset to file */
-int cln_dump_output_dataset(outdataset*);
+outdataset* cln_create_output_dataset(simopts* so, indataset* ind, som* net);
+/* create output dataset and dump to file */
+int cln_dump_output_dataset(outdataset* o);
 

@@ -10,30 +10,14 @@
         Simple scenario with 2 variables, representing sensory data. 
         
         Simulation options and parameters for runtime.
-	Definitions.
 */
 
 #include "som.h"
 
-/* simulation params */
-typedef struct{
-	short nsom;		// number of som in the net
-	som** somnets;		// array of soms
-	short paramsupdate;	// som dynamics params update type
-	double* alpha;		// sensory projections learning rate
-	double* sigma;		// neighborhood size
-	double* gamma;		// cross-modal impact factor
-	double* xi;		// inhibitory component factor
-	double* kappa;		// cross-modal Hebbian learning rate
-	double lambda;		// temporal coef for learning rates
-	short datasrc;		// data source
-	int simepochs;		// simulation epochs	
-}simopts;
-
 /* init simulation params */
-simopts* cln_setup_simulation(short, som**, short, double, double, double, double, double, short, int);
+simopts* cln_setup_simulation(short ut, double ai, double si, double gi, double xii, double ki, short src, int epochs, short learning_type);
 /* return simulation parameters after runtime */
-simopts* cln_get_simulation_params(simopts*);
+simopts* cln_get_simulation_params(simopts* in);
 /* set the current parameters in the simulation struct */
-void cln_set_simulation_params(simopts*, int, double, double, double, double, double);
+void cln_set_simulation_params(simopts*so, int iter, double ai, double si, double gi, double xii, double ki);
 
