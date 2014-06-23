@@ -40,12 +40,18 @@ int main(int argc, char** argv)
 {
 	/* local sim params */
 	int net_iter = 0;
-	
+	/* debug ASCII encoded files - remove in production code */	
+	char* debug_som1 = NULL;
+	char* debug_som2 = NULL;
 	/* create the SOM nets of the net */
 	som* som1 = cln_create_som(1, NET_SOM_SIZEX, NET_SOM_SIZEY, INPUT_SIZE, 2, 12);
 	som* som2 = cln_create_som(2, NET_SOM_SIZEX, NET_SOM_SIZEY, INPUT_SIZE, 8, 48);
 	/* prepare simulation params */
-	simopts* simulation = cln_setup_simulation(ADAPTIVE_PARAMS, ALPHA0, SIGMA0, GAMMA0, XI0, KAPPA0, DATA_SOURCE, MAX_EPOCHS, XMOD_LEARNING);
+	simopts* simulation = cln_setup_simulation(ADAPTIVE_PARAMS, 
+						   ALPHA0, SIGMA0, GAMMA0, XI0, KAPPA0, 
+						   DATA_SOURCE, 
+						   MAX_EPOCHS, 
+						   XMOD_LEARNING);
 	/* build the input datasets */
 	indataset* ind1 = cln_create_input_dataset(som1->id, DATA_SOURCE, INPUT_SIZE, NUM_IN_VEC, SENSOR_DATASET);
 	indataset* ind2 = cln_create_input_dataset(som2->id, DATA_SOURCE, INPUT_SIZE, NUM_IN_VEC, SENSOR_DATASET);
@@ -98,7 +104,7 @@ int main(int argc, char** argv)
 			break;
 		}
 	}
-	/* ------------------------------------------------------------------------------------------------------------------*/
+	/* -------------------------------------------------------------------------------------------------*/
 	/* get post simulation data */
 	simopts* sim_par_final = cln_get_simulation_params(simulation);	
 	/* display som data */
@@ -108,9 +114,11 @@ int main(int argc, char** argv)
 	outdataset* outd1 = cln_create_output_dataset(sim_par_final, ind1, som1);
 	outdataset* outd2 = cln_create_output_dataset(sim_par_final, ind2, som2);
 	/* dump data file */
-	cln_dump_output_dataset(outd1);
-	cln_dump_output_dataset(outd2);
-
+	debug_som1 = cln_dump_output_dataset(outd1);
+	debug_som2 = cln_dump_output_dataset(outd2);
+	/* dump the debug data file - ASCII encoded data */
+	cln_read_output_dataset(debug_som1);
+	cln_read_output_dataset(debug_som2);
 	/* free up resources */
 	cln_destroy_som(som1);
 	cln_destroy_som(som2);

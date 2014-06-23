@@ -42,5 +42,6 @@ indataset* cln_create_input_dataset(short netid, short data_src, int vsize, int 
 /* create the output dataset struct */
 outdataset* cln_create_output_dataset(simopts* so, indataset* ind, som* net);
 /* create output dataset and dump to file */
-int cln_dump_output_dataset(outdataset* o);
-
+char* cln_dump_output_dataset(outdataset* o);
+/* read output dataset for debugging purposes */
+int cln_read_output_dataset(char* ifile);

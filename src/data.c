@@ -40,12 +40,14 @@ indataset* cln_create_input_dataset(short netid, short data_src, int vsize, int 
 			}
 			/* temporal and algebraic correlation */
 			/* generate a sine wave */
+			/*
 			for(int idx = 0; idx < dset->len; idx++){
 				for(int jdx=0; jdx<dset->size; jdx++){
-					/* sine with f=25Hz, Ts = 25ms and amplitude given by som id */
+					// sine with f=25Hz, Ts = 25ms and amplitude given by som id 
 					dset->data[idx][jdx] = netid*sin(2*M_PI*50*(jdx/25));
 				}
-			}					
+			}
+			*/					
 		break;
 		case SENSOR_DATA:
       			printf("cln_create_input_dataset: Reading sensor data from file...\n");
@@ -79,12 +81,13 @@ outdataset* cln_create_output_dataset(simopts* so, indataset* ind, som* net)
 }
 
 /* dump the runtime data in a file for later processing */
-int cln_dump_output_dataset(outdataset* ods)
+char* cln_dump_output_dataset(outdataset* ods)
 {	
 	printf("cln_dump_output_dataset: Dumping output dataset to disk...\n");
 	time_t rawt; time(&rawt);
 	struct tm* tinfo = localtime(&rawt);
-	FILE* fout; char nfout[400];
+	FILE* fout; 
+	char* nfout = (char*)calloc(400, sizeof(char));
 	char simparams[200];	
 
 	strftime(nfout, 100, "%Y-%m-%d__%H:%M:%S", tinfo);
@@ -98,10 +101,54 @@ int cln_dump_output_dataset(outdataset* ods)
 
 	if((fout = fopen(nfout, "wb"))==NULL){
 		printf("cln_dump_output_dataset: Cannot create output file.\n");
-		return -1;
+		return NULL;
 	}
 	fwrite(ods, sizeof(outdataset), 1, fout);
-			
 	printf("cln_dump_output_dataset: Dumped to disk: %s\n", nfout);
+	fclose(fout);
+	return nfout;
+}
+
+/* read output dataset for debugging purposes */
+int cln_read_output_dataset(char *dumped_file)
+{	
+	printf("cln_read_output_dataset: Reading the dumped output dataset - debug ...\n");
+	char* debug_file = (char*)calloc(strlen(dumped_file)+9, sizeof(char));
+	debug_file = strcat(debug_file, dumped_file); 
+	debug_file = strcat(debug_file, "-DEBUG");
+	FILE* fin = fopen(dumped_file, "rb");
+	FILE* fout = fopen(debug_file, "w");
+	printf("cln_read_output_dataset: Debug file is %s \n", debug_file);
+	outdataset* od = (outdataset*)calloc(1, sizeof(outdataset));
+	if(!fin){
+		printf("cln_read_output_dataset: Cannot open runtime data file !\n");
+		return -1;
+	}
+	if(!fout){
+		printf("cln_read_output_dataset: Cannot open debug output data file !\n");
+		return -1;
+	}
+	/* find the end of the file and rewind to first position */
+	fseek(fin, sizeof(od), SEEK_END);
+	rewind(fin);
+	fread(od, sizeof(outdataset), 1, fin);
+	/* display contents of the struct read from the output file 
+		contents of the output dataset struct:
+		        od->sopts  ... simulation options
+		        od->idata  ... input data
+		        od->somnet ... network data
+	*/
+	fprintf(fout, "---- NETWORK SIMULATION PARAMETERS ----\n");
+	fprintf(fout, "Initial values for params\n");	
+	fprintf(fout, "update_type: %d \n sim_epochs: %d \n data_src: %d \n lambda: %lf \n alpha: %lf \n sigma: %lf \n gamma: %lf \n xi: %lf \n kappa: %lf \n cur_epoch: %d \n learn_rule: %d \n", od->sopts->paramsupdate, od->sopts->simepochs, od->sopts->datasrc, od->sopts->lambda, od->sopts->alpha[0], od->sopts->sigma[0], od->sopts->gamma[0], od->sopts->xi[0], od->sopts->kappa[0], od->sopts->cur_epoch, od->sopts->learn_rule);
+	fprintf(fout, "Development process values for params\n");
+	fprintf(fout, "update_type \t sim_epochs \t data_src \t lambda \t\t alpha \t\t sigma \t\t gamma \t\t xi \t\t kappa \t\t cur_epoch \t\t learn_rule \n");
+	for(int idx = 0; idx<od->sopts->simepochs; idx++){
+		fprintf(fout, "%d \t\t %d \t\t %d \t\t %lf \t\t %lf \t\t %lf \t\t %lf \t\t %lf \t\t %lf \t\t %d \t\t %d \n", od->sopts->paramsupdate, od->sopts->simepochs, od->sopts->datasrc, od->sopts->lambda, od->sopts->alpha[idx], od->sopts->sigma[idx], od->sopts->gamma[idx], od->sopts->xi[idx], od->sopts->kappa[idx], od->sopts->cur_epoch, od->sopts->learn_rule);
+	}
+	/* close file and return succesfully */	
+	fclose(fin);
+	fclose(fout);
 	return EXIT_SUCCESS;
 }
+
